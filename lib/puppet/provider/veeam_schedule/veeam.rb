@@ -96,7 +96,7 @@ Puppet::Type.type(:veeam_schedule).provide(:veeam, :parent => Puppet::Provider::
   def get_job_id
     # check if the job ID has already been set (the job name will not change
     #   during execution, so it is safe to assume that the job ID won't change)
-    if not defined? @job or @job_id == '' or @job_id == nil
+    if not defined? @job_id or @job_id == '' or @job_id == nil
       result = veeamconfig('job', 'list').lines
       if result.length > 1
         result.each_with_index do |line, index|
@@ -109,7 +109,8 @@ Puppet::Type.type(:veeam_schedule).provide(:veeam, :parent => Puppet::Provider::
           job_name = bits[0]
 
           # parse and return the job ID
-          bits[1].tr('{}', '') if job_name == @resource[:job_name]
+          @job_id = bits[1].tr('{}', '') if job_name == @resource[:job_name]
+          return @job_id
         end
 
         # return false if the job doesn't exist
