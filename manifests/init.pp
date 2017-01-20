@@ -26,22 +26,4 @@ class veeam_agent (
   include '::veeam_agent::service'
 
   Class['::veeam_agent::package'] -> Class['::veeam_agent::service'] ->
-
-  veeam_repo { 'test_backup':
-    ensure   => present,
-    location => '/tmp/backup_test',
-  } ->
-
-  veeam_job { 'test_job':
-    ensure     => present,
-    repository => 'test_backup',
-    objects    => [ 'lv_home', 'lv_root', 'lv_var', ],
-  }
-
-  veeam_schedule { 'test_schedule':
-    ensure   => present,
-    job_name => 'test_job',
-    weekdays => [ 'Monday', 'Wednesday', 'Friday', ],
-    time     => '23:00',
-  }
 }
