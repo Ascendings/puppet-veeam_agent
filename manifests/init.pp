@@ -25,5 +25,5 @@ class veeam_agent (
   include '::veeam_agent::package'
   include '::veeam_agent::service'
 
-  Class['::veeam_agent::package'] -> Class['::veeam_agent::service'] ->
+  Class['::veeam_agent::package'] -> Class['::veeam_agent::service']
 }
