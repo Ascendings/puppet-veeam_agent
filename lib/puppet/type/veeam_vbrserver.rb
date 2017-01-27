@@ -14,7 +14,7 @@ Puppet::Type.newtype(:veeam_vbrserver) do
     end
   end
 
-  newproperty(:domain) do
+  newparam(:domain) do
     desc "The login domain for the Veeam B&R server"
     validate do |value|
       unless value =~ /[\w]+/
@@ -23,7 +23,7 @@ Puppet::Type.newtype(:veeam_vbrserver) do
     end
   end
 
-  newproperty(:username) do
+  newparam(:username) do
     desc "The login username for the Veeam B&R server"
     validate do |value|
       unless value =~ /[\w-]+/
