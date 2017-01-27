@@ -1,6 +1,10 @@
 Puppet::Type.newtype(:veeam_repo) do
   ensurable
 
+  autorequire(:veeam_vbrserver) do
+    self[:server_name]
+  end
+
   newparam(:name) do
     desc "The name of the Veeam repository"
   end
@@ -12,5 +16,9 @@ Puppet::Type.newtype(:veeam_repo) do
         raise ArgumentError, "%s is not a valid backup repository location" % value
       end
     end
+  end
+
+  newparam(:server_name) do
+    desc "The name of the Veeam B&R server - this should be the same name as the resource you define."
   end
 end
