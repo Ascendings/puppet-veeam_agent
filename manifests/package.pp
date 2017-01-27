@@ -55,6 +55,11 @@ class veeam_agent::package (
         require => [ Yumrepo['veeam_repo'], Package['epel-release'], ],
       }
     }
+
+    'debian': {
+      fail("${::osfamily} family OSes will be supported in a future release")
+    }
+
     default: {
       fail("${::operatingsystem} is not supported yet!")
     }
