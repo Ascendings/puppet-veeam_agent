@@ -1,0 +1,42 @@
+{
+  "name": "puppet-veeam_agent",
+  "version": "0.1.0",
+  "author": "Ascendings",
+  "summary": "Installs and configures the Veeam Endpoint Backup Agent for Linux package",
+  "license": "Apache-2.0",
+  "source": "https://github.com/Ascendings/puppet-veeam_agent",
+  "project_page": "https://github.com/ascendings/puppet-veeam_agent",
+  "issues_url": "https://github.com/ascendings/puppet-veeam_agent/issues",
+  "dependencies": [
+    {"name":"puppetlabs/stdlib","version_requirement":">= 4.13.0 < 5.0.0"}
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "7",
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "14.04",
+        "16.04"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 3.7.0 < 5.0.0"
+    }
+  ]
+}
