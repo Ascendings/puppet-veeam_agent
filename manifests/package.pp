@@ -10,6 +10,18 @@ class veeam_agent::package (
   $package_name = $::veeam_agent::package_name,
   $package_ensure = $::veeam_agent::package_ensure,
 ){
+  case $::architecture {
+    'i386', 'x86': {
+      $arch = 'i386'
+    },
+    'amd64', 'x86_64': {
+      $arch = 'x86_64'
+    },
+    default: {
+      fail("The Veeam repositories do not support the ${::architecture} architecture")
+    }
+  }
+
   case $::osfamily {
     'redhat': {
       case $::operatingsystem {
@@ -57,7 +69,28 @@ class veeam_agent::package (
     }
 
     'debian': {
-      fail("${::osfamily} family OSes will be supported in a future release")
+      file { 'veeam_gpg_key':
+        ensure => present,
+        path   => '/etc/apt/trusted.gpg.d/veeam.gpg',
+        source => 'puppet:///modules/veeam_agent/files/trusted.gpg.d/veeam.gpg',
+      }
+
+      apt::repo { 'veeam':
+        comment  => 'Debian repository for Veeam Endpoint Backup Agent for Linux',
+        location => "http://repository.veeam.com/backup/linux/agent/dpkg/debian/${arch}/",
+        release  => 'noname',
+        repos    => 'veeam',
+        include  => {
+          'deb' => true,
+        },
+        require  => File['veeam_gpg_key'],
+      }
+
+      package { 'veeam_package':
+        ensure  => $package_ensure,
+        name    => $package_name,
+        require => Apt::Repo['veeam'],
+      }
     }
 
     default: {
