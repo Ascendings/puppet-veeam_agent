@@ -74,7 +74,7 @@ class veeam_agent::package (
       file { 'veeam_gpg_key':
         ensure => present,
         path   => '/etc/apt/trusted.gpg.d/veeam.gpg',
-        source => 'puppet:///modules/veeam_agent/files/trusted.gpg.d/veeam.gpg',
+        source => 'puppet:///modules/veeam_agent/trusted.gpg.d/veeam.gpg',
       }
 
       apt::source { 'veeam':
