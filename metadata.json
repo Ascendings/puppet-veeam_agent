@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "author": "Ascendings",
   "summary": "Installs and configures the Veeam Endpoint Backup Agent for Linux package",
-  "license": "Apache-2.0",
+  "license": "GPL-3.0",
   "source": "https://github.com/Ascendings/puppet-veeam_agent",
   "project_page": "https://github.com/ascendings/puppet-veeam_agent",
   "issues_url": "https://github.com/ascendings/puppet-veeam_agent/issues",
