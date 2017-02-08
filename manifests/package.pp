@@ -13,10 +13,12 @@ class veeam_agent::package (
   case $::architecture {
     'i386', 'x86': {
       $arch = 'i386'
-    },
+      $arch_dir = $arch
+    }
     'amd64', 'x86_64': {
-      $arch = 'x86_64'
-    },
+      $arch = 'amd64'
+      $arch_dir = 'x86_64'
+    }
     default: {
       fail("The Veeam repositories do not support the ${::architecture} architecture")
     }
@@ -75,21 +77,22 @@ class veeam_agent::package (
         source => 'puppet:///modules/veeam_agent/files/trusted.gpg.d/veeam.gpg',
       }
 
-      apt::repo { 'veeam':
-        comment  => 'Debian repository for Veeam Endpoint Backup Agent for Linux',
-        location => "http://repository.veeam.com/backup/linux/agent/dpkg/debian/${arch}/",
-        release  => 'noname',
-        repos    => 'veeam',
-        include  => {
+      apt::source { 'veeam':
+        comment      => 'Debian repository for Veeam Endpoint Backup Agent for Linux',
+        location     => "http://repository.veeam.com/backup/linux/agent/dpkg/debian/${arch_dir}/",
+        release      => 'noname',
+        repos        => 'veeam',
+        architecture => $arch,
+        include      => {
           'deb' => true,
         },
-        require  => File['veeam_gpg_key'],
+        require      => File['veeam_gpg_key'],
       }
 
       package { 'veeam_package':
         ensure  => $package_ensure,
         name    => $package_name,
-        require => Apt::Repo['veeam'],
+        require => Apt::Source['veeam'],
       }
     }
 
