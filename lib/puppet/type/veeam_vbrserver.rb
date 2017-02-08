@@ -1,6 +1,11 @@
 Puppet::Type.newtype(:veeam_vbrserver) do
   ensurable
 
+  # make sure the veeam package is installed first
+  autorequire(:package) do
+    'veeam_package'
+  end
+
   newparam(:name) do
     desc "The name of the Veeam Backup & Repository server"
   end

@@ -1,6 +1,11 @@
 Puppet::Type.newtype(:veeam_job) do
   ensurable
 
+  # make sure the veeam package is installed first
+  autorequire(:package) do
+    'veeam_package'
+  end
+
   autorequire(:veeam_repo) do
     self[:repository]
   end
