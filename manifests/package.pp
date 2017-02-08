@@ -78,15 +78,16 @@ class veeam_agent::package (
       }
 
       apt::source { 'veeam':
-        comment      => 'Debian repository for Veeam Endpoint Backup Agent for Linux',
-        location     => "http://repository.veeam.com/backup/linux/agent/dpkg/debian/${arch_dir}/",
-        release      => 'noname',
-        repos        => 'veeam',
-        architecture => $arch,
-        include      => {
+        comment       => 'Debian repository for Veeam Endpoint Backup Agent for Linux',
+        location      => "http://repository.veeam.com/backup/linux/agent/dpkg/debian/${arch_dir}/",
+        release       => 'noname',
+        repos         => 'veeam',
+        architecture  => $arch,
+        include       => {
           'deb' => true,
         },
-        require      => File['veeam_gpg_key'],
+        notify_update => true,
+        require       => File['veeam_gpg_key'],
       }
 
       package { 'veeam_package':
