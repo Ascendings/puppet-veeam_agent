@@ -4,6 +4,7 @@ class veeam_agent (
   $manage_repo = true,
   $repo_name = 'veeam',
   $repo_ensure = present,
+  $ensure_epel = true,
 
   # package stuff
   $package_name = 'veeam',

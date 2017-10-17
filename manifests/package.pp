@@ -4,7 +4,7 @@ class veeam_agent::package (
   $manage_repo = $::veeam_agent::manage_repo,
   $repo_name = $::veeam_agent::repo_name,
   $repo_ensure = $::veeam_agent::repo_ensure,
-  $ensure_epel = true,
+  $ensure_epel = $::veeam_agent::ensure_epel,
 
   # package stuff
   $package_name = $::veeam_agent::package_name,
@@ -36,7 +36,8 @@ class veeam_agent::package (
               baseurl  => "http://repository.veeam.com/backup/linux/agent/rpm/el/${::operatingsystemmajrelease}/\$basearch",
               enabled  => true,
               gpgcheck => true,
-              gpgkey   => 'http://repository.veeam.com/keys/RPM-GPG-KEY-VeeamSoftwareRepo http://repository.veeam.com/keys/VeeamSoftwareRepos'
+              gpgkey   => 'http://repository.veeam.com/keys/RPM-GPG-KEY-VeeamSoftwareRepo http://repository.veeam.com/keys/VeeamSoftwareRepos',
+              before   => Package['veeam_package'],
             }
           }
         }
@@ -49,7 +50,8 @@ class veeam_agent::package (
               baseurl  => "http://repository.veeam.com/backup/linux/agent/rpm/fc/${::operatingsystemmajrelease}/\$basearch",
               enabled  => true,
               gpgcheck => true,
-              gpgkey   => 'http://repository.veeam.com/keys/RPM-GPG-KEY-VeeamSoftwareRepo http://repository.veeam.com/keys/VeeamSoftwareRepos'
+              gpgkey   => 'http://repository.veeam.com/keys/RPM-GPG-KEY-VeeamSoftwareRepo http://repository.veeam.com/keys/VeeamSoftwareRepos',
+              before   => Package['veeam_package'],
             }
           }
         }
@@ -60,13 +62,14 @@ class veeam_agent::package (
 
       if $ensure_epel {
         # make sure epel is installed
-        ensure_packages(['epel-release'])
+        ensure_packages(['epel-release'], {
+          before => Package['veeam_package'],
+        )
       }
 
       package { 'veeam_package':
         ensure  => $package_ensure,
         name    => $package_name,
-        require => [ Yumrepo['veeam_repo'], Package['epel-release'], ],
       }
     }
 
