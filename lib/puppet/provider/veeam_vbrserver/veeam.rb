@@ -4,7 +4,7 @@ Puppet::Type.type(:veeam_vbrserver).provide(:veeam, :parent => Puppet::Provider:
 
   def create
     veeamconfig('vbrserver', 'add', '--name', @resource[:name],
-        '--endpoint', @resource[:server], '--domain', @resource[:domain],
+        '--address', @resource[:server], '--domain', @resource[:domain],
         '--login', @resource[:username], '--password', @resource[:password])
   end
 
@@ -31,6 +31,6 @@ Puppet::Type.type(:veeam_vbrserver).provide(:veeam, :parent => Puppet::Provider:
   end
 
   def server=(value)
-    veeamconfig('vbrserver', 'edit', '--endpoint', @resource[:server], 'for', "#{value}")
+    veeamconfig('vbrserver', 'edit', '--address', @resource[:server], 'for', "#{value}")
   end
 end
