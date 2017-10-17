@@ -64,7 +64,7 @@ class veeam_agent::package (
         # make sure epel is installed
         ensure_packages(['epel-release'], {
           before => Package['veeam_package'],
-        )
+        })
       }
 
       package { 'veeam_package':
