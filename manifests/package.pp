@@ -25,9 +25,9 @@ class veeam_agent::package (
   }
 
   case $::osfamily {
-    'redhat': {
+    'RedHat': {
       case $::operatingsystem {
-        'redhat', 'centos': {
+        'RedHat', 'CentOS': {
           if $manage_repo {
             yumrepo { 'veeam_repo':
               ensure   => $repo_ensure,
@@ -41,7 +41,7 @@ class veeam_agent::package (
             }
           }
         }
-        'fedora': {
+        'Fedora': {
           if $manage_repo {
             yumrepo { 'veeam_repo':
               ensure   => $repo_ensure,
@@ -73,7 +73,7 @@ class veeam_agent::package (
       }
     }
 
-    'debian': {
+    'Debian': {
       file { 'veeam_gpg_key':
         ensure => present,
         path   => '/etc/apt/trusted.gpg.d/veeam.gpg',
