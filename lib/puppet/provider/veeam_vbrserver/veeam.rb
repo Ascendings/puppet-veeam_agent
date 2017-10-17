@@ -4,8 +4,9 @@ Puppet::Type.type(:veeam_vbrserver).provide(:veeam, :parent => Puppet::Provider:
 
   def create
     veeamconfig('vbrserver', 'add', '--name', @resource[:name],
-        '--address', @resource[:server], '--domain', @resource[:domain],
-        '--login', @resource[:username], '--password', @resource[:password])
+        '--address', @resource[:server], '--port', @resource[:port],
+        '--domain', "'#{@resource[:domain]}'", '--login', @resource[:username],
+        '--password', @resource[:password])
   end
 
   def destroy
@@ -27,10 +28,22 @@ Puppet::Type.type(:veeam_vbrserver).provide(:veeam, :parent => Puppet::Provider:
   def server
     result = veeamconfig('vbrserver', 'info', '--name', @resource[:name]).lines
     # tease out the endpoint server
-    return result[3].strip.split(': ')[1]
+    endpoint_addr = result[3].strip.split(': ')[1]
+    return endpoint_addr.strip.split(':')[0]
   end
 
   def server=(value)
-    veeamconfig('vbrserver', 'edit', '--address', @resource[:server], 'for', "#{value}")
+    veeamconfig('vbrserver', 'edit', '--name', @resource[:name], '--address', @resource[:server])
+  end
+
+  def port
+    result = veeamconfig('vbrserver', 'info', '--name', @resource[:name]).lines
+    # tease out the endpoint server
+    endpoint_addr = result[3].strip.split(': ')[1]
+    return endpoint_addr.strip.split(':')[1]
+  end
+
+  def port=(value)
+    veeamconfig('vbrserver', 'edit', '--name', @resource[:name], '--port', @resource[:port])
   end
 end
