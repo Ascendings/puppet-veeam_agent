@@ -82,7 +82,7 @@ Puppet::Type.type(:veeam_schedule).provide(:veeam, :parent => Puppet::Provider::
   def time=(value)
     # check if the weekdays property contains 'daily' - this will override any
     #   other days that have been set
-    if @resource[:weekdays].include? 'daily'
+    if @resource[:weekdays].include? :daily or @resource[:weekdays].include? 'daily'
       veeamconfig('schedule', 'set', '--jobId', get_job_id, '--daily', '--at', "#{value}")
     else
       wd = @resource[:weekdays].join(',')
