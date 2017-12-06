@@ -72,6 +72,7 @@ Puppet::Type.type(:veeam_job).provide(:veeam, :parent => Puppet::Provider::Veeam
     # array to hold objects being backed up
     objects = []
     result = %x( veeamconfig job info --name test_job ).lines
+    result = veeamconfig('job', 'info', '--name', "#{@resource[:name]}").lines
 
     # loop through every line of output
     result.each do |line|
