@@ -39,15 +39,11 @@ Puppet::Type.type(:veeam_schedule).provide(:veeam, :parent => Puppet::Provider::
   # return the schedule's weekdays
   def weekdays
     result = veeamconfig('schedule', 'show', '--jobId', get_job_id).lines
-    # get an array of days
-    wd = result[0].strip.split(': ')[1].split(', ')
 
-    # if the array of weekdays is 7, this means that every day has a backup, so
-    #   we should, instead, use daily
-    if wd.length == 7
+    if result[0].strip == 'Every day'
       ['daily']
     else
-      wd
+      result[0].strip.split(': ')[1].split(', ')
     end
   end
 
