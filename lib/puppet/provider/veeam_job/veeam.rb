@@ -38,19 +38,13 @@ Puppet::Type.type(:veeam_job).provide(:veeam, :parent => Puppet::Provider::Veeam
 
   # return the job's backup repository
   def repository
-    result = veeamconfig('job', 'list').lines
+    result = veeamconfig('job', 'info', '--id', "#{@resource[:name]}").lines
     if result.length > 1
       result.each_with_index do |line, index|
-        # skip the first line of output, since it is just the table setup
-        next if index == 0
-
-        # split line into array by space
-        bits = line.split(' ')
-        # pull out the repository name
-        job_name = bits[0]
-
-        # return the job's repository if it exists
-        return bits[2] if job_name == @resource[:name]
+        if line.strip.start_with?('Repository name:')
+          bits = line.strip.split(': ')
+          return bits[1].strip
+        end
       end
 
       # the job's repository is not set if the job does not exist
